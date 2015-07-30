@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+    
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	
+	
+	<bean id="entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="database" value="${db.name}" />
+				<property name="showSql" value="${db.showSql}" />
+				<property name="generateDdl" value="${db.generateDdlRequired}" />				
+			</bean>
+		</property>
+		<property name="packagesToScan" value="com.icode.entity" />
+		<property name="jpaPropertyMap">
+      		<map>
+		        <entry key="hibernate.connection.provider_class" value="${hibernate.providerClass}" />
+                <entry key="hibernate.dialect" value="${hibernate.dialect}"/>
+                <entry key="hibernate.connection.driver_class" value="${hibernate.driverClass}" />
+                <entry key="hibernate.connection.url" value="${db.jdbcurl}" />
+                <entry key="hibernate.connection.username" value="${db.user}" />
+                <entry key="hibernate.connection.password" value="${db.pass}" />
+                <entry key="hibernate.c3p0.min_size" value="${c3p0.minSize}"/>
+		        <entry key="hibernate.c3p0.max_size" value="${c3p0.maxSize}"/>
+		        <entry key="hibernate.c3p0.timeout" value="${c3p0.timeout}"/> 
+                <entry key="hibernate.c3p0.max_statements" value="${c3p0.maxStatements}"/>   
+                <entry key="hibernate.c3p0.numHelperThreads" value="${c3p0.numHelperThreads}"/>                
+                <entry key="hibernate.c3p0.maxIdleTime" value="${c3p0.maxIdleTime}"/>   
+                <entry key="hibernate.c3p0.maxIdleTimeExcessConnections" value="${c3p0.maxIdleTimeExcessConnections}"/>   
+      		</map>
+    	</property>
+        <property name="jpaDialect">
+        	<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+        </property>
+        <property name="persistenceUnitName" value="punit" />                        
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" mode="proxy" />
+   
+	<bean id="genericDao" class="com.icode.platform.dao.GenericJpaDao" />
+		
+</beans>
+
+

@@ -1,27 +1,17 @@
-package com.icode.model;
+package com.icode.dto;
 
-import org.springframework.stereotype.Component;
+import com.icode.platform.dto.AbstractDTO;
 /**
  * 
  * @author nadhiya
  *
  */
-@Component
-public class User {
+public class UserDTO extends AbstractDTO{
 
-	int id;
-	
 	String name;
 	
 	int age;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -38,7 +28,5 @@ public class User {
     public void setAge(int age) {
         this.age = age;
     }
-	
-	
 
 }

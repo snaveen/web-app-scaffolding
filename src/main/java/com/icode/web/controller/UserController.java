@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.icode.dto.UserDTO;
+import com.icode.entity.User;
 import com.icode.service.UserService;
 
 /**
@@ -30,12 +32,17 @@ public class UserController {
 
 	}
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-	public String hello(@PathVariable("id") int id,ModelMap model) {
+    @RequestMapping(value = "/user/{pkey}", method = RequestMethod.GET)
+	public String hello(@PathVariable("pkey") Long pkey,ModelMap model) {
 
-//		ModelAndView model = new ModelAndView();
-//		model.setViewName("user");
-		model.addAttribute("user", userService.getUser(id));
+        
+        UserDTO userDTO = new UserDTO();
+        userDTO.setName("Nadhiya");
+        userDTO.setAge(16);
+        
+        userService.createUser(userDTO);
+        
+		model.addAttribute("user", userService.getUser(userDTO.getPkey()));
 
 		return "user";
 
